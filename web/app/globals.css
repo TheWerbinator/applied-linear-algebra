@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: #0b0f17;
+  color: #e5e7eb;
+  min-height: 100%;
+}
+
+input[type="number"], input[type="text"], select, textarea {
+  @apply rounded border border-border bg-background px-3 py-2 text-sm text-gray-100 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent;
+}
+
+button {
+  @apply rounded bg-accent px-4 py-2 text-sm font-medium text-gray-900 transition hover:bg-sky-300 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+label {
+  @apply block text-xs font-medium uppercase tracking-wide text-gray-400;
+}
