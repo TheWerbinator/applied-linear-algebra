@@ -1,4 +1,4 @@
-name: Backend CI
+name: Backend CI/CD
 
 on:
   push:
@@ -12,13 +12,13 @@ on:
       - "api/**"
       - ".github/workflows/backend.yml"
 
-defaults:
-  run:
-    working-directory: api
-
 jobs:
-  python:
+  test:
+    name: Lint, type-check, test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
     steps:
       - uses: actions/checkout@v4
 
@@ -42,3 +42,23 @@ jobs:
 
       - name: Tests
         run: pytest --cov=applied_linear_algebra --cov=api --cov-report=term-missing
+
+  deploy:
+    name: Deploy to Fly.io
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-backend
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy
+        working-directory: api
+        run: flyctl deploy . --remote-only --config deploy/fly.toml --dockerfile deploy/Dockerfile --image-label commit-${{ github.sha }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

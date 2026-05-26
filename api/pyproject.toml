@@ -2,8 +2,8 @@
 name = "applied-linear-algebra"
 version = "0.1.0"
 description = "Six applied linear-algebra algorithms (k-means, Fourier fit, Hill cipher, AR forecast, Lotka-Volterra, random walk) exposed via FastAPI."
-readme = "../README.md"
 requires-python = ">=3.11"
+license = { text = "MIT" }
 authors = [{ name = "Shawn Werber" }]
 dependencies = [
   "numpy>=1.26,<3.0",
