@@ -110,9 +110,11 @@ export default function FourierPage() {
               },
             ]}
             layout={{
-              title: `Fourier fit, ${result.n_harmonics} harmonics, residual = ${result.residual_norm.toFixed(3)}`,
-              xaxis: { title: "x" },
-              yaxis: { title: "f(x)" },
+              title: {
+                text: `Fourier fit, ${result.n_harmonics} harmonics, residual = ${result.residual_norm.toFixed(3)}`,
+              },
+              xaxis: { title: { text: "x" } },
+              yaxis: { title: { text: "f(x)" } },
               height: 480,
             }}
           />

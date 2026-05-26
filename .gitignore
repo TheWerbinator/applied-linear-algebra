@@ -90,3 +90,4 @@ fly.toml.bak
 # Cursor
 .cursorignore
 .cursorindexingignore
+web/.env.local

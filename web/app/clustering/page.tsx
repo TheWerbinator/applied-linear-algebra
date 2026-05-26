@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { Data } from "plotly.js-dist-min";
 import AlgoLayout from "@/components/AlgoLayout";
 import Plot from "@/components/Plot";
 import { api } from "@/lib/api";
@@ -29,29 +30,30 @@ export default function ClusteringPage() {
   };
 
   // Petal length (col 2) vs petal width (col 3) — the most separable pair.
-  const traces = result
-    ? Array.from({ length: k }, (_, j) => ({
-        x: result.data.filter((_, i) => result.labels[i] === j).map((r) => r[2]),
-        y: result.data.filter((_, i) => result.labels[i] === j).map((r) => r[3]),
-        mode: "markers" as const,
-        type: "scatter" as const,
-        name: `cluster ${j}`,
-        marker: { color: CLUSTER_COLORS[j % CLUSTER_COLORS.length], size: 8 },
-      })).concat([
+  const traces: Data[] = result
+    ? [
+        ...Array.from({ length: k }, (_, j): Data => ({
+          x: result.data.filter((_, i) => result.labels[i] === j).map((r) => r[2]),
+          y: result.data.filter((_, i) => result.labels[i] === j).map((r) => r[3]),
+          mode: "markers",
+          type: "scatter",
+          name: `cluster ${j}`,
+          marker: { color: CLUSTER_COLORS[j % CLUSTER_COLORS.length], size: 8 },
+        })),
         {
           x: result.centroids.map((c) => c[2]),
           y: result.centroids.map((c) => c[3]),
-          mode: "markers" as const,
-          type: "scatter" as const,
+          mode: "markers",
+          type: "scatter",
           name: "centroids",
           marker: {
             color: "#fff",
             size: 16,
-            symbol: "x" as never,
+            symbol: "x",
             line: { width: 2, color: "#000" },
           },
-        },
-      ])
+        } as Data,
+      ]
     : [];
 
   return (
@@ -95,9 +97,9 @@ export default function ClusteringPage() {
           <Plot
             data={traces}
             layout={{
-              title: "Iris clusters (petal length vs petal width)",
-              xaxis: { title: "petal length (cm)" },
-              yaxis: { title: "petal width (cm)" },
+              title: { text: "Iris clusters (petal length vs petal width)" },
+              xaxis: { title: { text: "petal length (cm)" } },
+              yaxis: { title: { text: "petal width (cm)" } },
               height: 480,
             }}
           />

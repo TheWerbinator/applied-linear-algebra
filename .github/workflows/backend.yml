@@ -59,6 +59,6 @@ jobs:
 
       - name: Deploy
         working-directory: api
-        run: flyctl deploy . --remote-only --config deploy/fly.toml --dockerfile deploy/Dockerfile --image-label commit-${{ github.sha }}
+        run: flyctl deploy --remote-only --image-label commit-${{ github.sha }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
